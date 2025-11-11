@@ -41,6 +41,13 @@ async function run() {
         res.send(result)
      })
 
+     app.delete('/Homes/:id', async (req, res) => {
+      const {id} = req.params.id
+      const object ={_id: new ObjectId(id)}
+      const result = await homeCollection.deleteOne(object)
+      res.sed(result)
+     })
+
 
      app.get('/Homes/:id', async (req, res) =>{
       const {id} = req.params
@@ -58,6 +65,15 @@ async function run() {
 
      })
 
+     app.get('/latest-homes', async (req, res) => {
+
+
+    const result = await homeCollection.find().sort({postedAt:'desc'}).limit(6).toArray()
+    console.log(result)
+    res.send(result)
+   })
+
+
 
     app.post('/Homes/', async (req, res)=> {
       const newProduct = req.body
@@ -68,8 +84,7 @@ async function run() {
 
 
 
-
-
+   
 
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
