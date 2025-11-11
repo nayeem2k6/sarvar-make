@@ -73,7 +73,16 @@ async function run() {
     res.send(result)
    })
 
+   app.get('/users', async (req, res) => {
+    const query = {}
+    if(query.email){
+      query.userEmail=email;
+    }
+    const data = homeCollection.find(query);
+    const result = await data.toArray();
+    res.send(result)
 
+  })
 
     app.post('/Homes/', async (req, res)=> {
       const newProduct = req.body
