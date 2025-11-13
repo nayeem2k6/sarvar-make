@@ -35,6 +35,7 @@ async function run() {
      await client.connect();
      const db = client.db('Home-Nest')
      const homeCollection = db.collection('Homes')
+     const reviewCollection = db.collection('review')
 
      app.get('/Homes', async (req, res) =>{
 
@@ -42,6 +43,22 @@ async function run() {
 
         res.send(result)
      })
+
+
+
+     app.get ('/review', async (req, res) => {
+      const result = await reviewCollection.find().toArray()
+      res.send(result)
+     })
+
+
+      app.post('/review-post', async (req, res)=> {
+      const newProduct = req.body
+      console.log(newProduct)
+      newProduct.postedAt = new Date()
+      const result = await reviewCollection.insertOne(newProduct);
+      res.send(result)
+    })
 
     
      app.get('/Homes/:id', async (req, res) =>{
